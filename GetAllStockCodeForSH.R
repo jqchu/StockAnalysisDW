@@ -1,7 +1,7 @@
 #GetAllStockCode
-#本程序类用RCURL从上海证券交易所网站上抓取沪市证券股票代码
-#输出1： 将所抓取的结果输入到E:\\R\\MyStudy\\Stock_info2.csv
-#输入2:  MySQL DB:stock_dw.STOCK_CODE_SH
+#This scripts used to get stock data from Shanghai sse.com.cn
+#Output 1： E:\\R\\MyStudy
+#Output 2:  MySQL DB:stock_dw.STOCK_CODE_SH
 
 library("bitops")
 library("XML")
@@ -12,16 +12,9 @@ library(zoo)
 library(xts)
 library(quantmod)
 
-#自定义函数,获取股票历史数据
-getHistoryPrice <- function(x){
-  #
-  
-}
-
-
 setwd("E:\\R\\MyStudy")
 
-#从上海证交所获取信息
+#get stock data base info from see.com.cn 
 header02 <- c("Host"="query.sse.com.cn",
               "User-Agent"="Mozilla/5.0 (Windows NT 6.1; WOW64; rv:38.0) Gecko/20100101 Firefox/38.0",
               "Accept"="*/*",
@@ -51,12 +44,11 @@ for (x in jsonData$pageHelp$data) {
 
 names(info) <- c("NUM","FULLNAME","NAME","CODE")
 
-#输出: 将数据写入到MYSQL数据库
+#Output: put the data into mysql
 library(RODBC)
-channel_sh<-odbcConnect("MySQL",uid="root",pwd="77297729")
+channel_sh<-odbcConnect("MySQL",uid="root",pwd="root")
 sqlQuery(channel_sh,"DROP TABLE IF EXISTS STOCK_CODE_SH_STAGING")
 sqlSave(channel_sh, info,"STOCK_CODE_SH_STAGING",rownames=FALSE)
-
 
 odbcClose(channel_sh)
 
