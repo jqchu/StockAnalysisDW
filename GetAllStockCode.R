@@ -75,7 +75,7 @@ sqlQuery(channel,"DELETE FROM stock_dw.stock_code where left(code,2) <> '60'")
 
 #process SZ stock data
 info <- getStockCodeSZ()
-sqlProcessStatement <- "insert into `stock_dw`.`stock_code`(`code`,`company_abbr`,`company_full_name`,`english_name`,`addr`,`a_code`,`a_abbr`,`a_offer_date`,`a_capital`,`a_shares_capital`,`b_code`,`b_abbr`,`b_offer_date`,`b_capital`,`b_shares_capital`,`region`,`province`,`city`,`industry`,`web_site`) values("
+sqlProcessStatement <- "insert into `stock_dw`.`stock_code`(`code`,`company_abbr`,`company_full_name`,`english_name`,`addr`,`a_code`,`a_abbr`,`a_offer_date`,`a_capital`,`a_shares_capital`,`b_code`,`b_abbr`,`b_offer_date`,`b_capital`,`b_shares_capital`,`region`,`province`,`city`,`industry`,`web_site`,`create_time`,`update_time`) values("
 
 for (i in 1:nrow(info)){
   sql <-paste("'",info[i,1],"',",
@@ -97,7 +97,9 @@ for (i in 1:nrow(info)){
               "'",info[i,17],"',",
               "'",info[i,18],"',",
               "'",info[i,19],"',",
-              "'",info[i,20],"'",sep="")
+              "'",info[i,20],"',",
+              "current_timestamp",",",
+              "current_timestamp",sep="")
   sqlQuery(channel,paste(sqlProcessStatement,sql,")",sep=""))
 }
 
@@ -105,12 +107,14 @@ for (i in 1:nrow(info)){
 #process SH stock data
 info <- getStockCodeSH()
 sqlQuery(channel,"DELETE FROM stock_dw.stock_code where left(code,2) = '60'")
-sqlProcessStatement <-'INSERT INTO `stock_dw`.`stock_code`(`company_full_name`,  `company_abbr`,  `code`) values('
+sqlProcessStatement <-'INSERT INTO `stock_dw`.`stock_code`(`company_full_name`, `company_abbr`,`code`, `create_time`,`update_time`) values('
 sql <- ""
 for(i in 1:nrow(info)){
   sql <-paste("'",info[i,2],"',",
               "'",info[i,3],"',",
-              "'",info[i,4],"'",sep="")
+              "'",info[i,4],"',",
+              "current_timestamp",",",
+              "current_timestamp",sep="")
   sqlQuery(channel,paste(sqlProcessStatement,sql,")",sep=""))
 }
 
