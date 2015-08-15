@@ -64,7 +64,7 @@ hs_a$date <- as.character(Sys.Date())
           
 #Store the data into MySQL DB. 
 
-channel_hs<-odbcConnect("MySQL",uid="root",pwd="77297729")
+channel_hs<-odbcConnect("MySQL",uid="root",pwd="123456")
 sqlDrop(channel_hs,"stock_dw.hq_staging")
 sqlSave(channel_hs,hs_a, "stock_dw.hq_staging", rownames = FALSE)
 
